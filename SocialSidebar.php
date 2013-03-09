@@ -36,8 +36,8 @@ $wgExtensionCredits['other'][] = array(
     'name'           => 'SocialMediaIcons',
     'version'        => '0.1',
     'author'         => '[https://github.com/TamerShlash Tamer Shlash]',
-    'description'    => 'Adds custom [https://www.twitter.com Twitter] and [https://www.facebook.com Facebook] links to the sidebar, fork of [https://www.mediawiki.org/wiki/User:Joa_ds Joachim De Schrijver\'s] [https://www.mediawiki.org/wiki/Extension:Social_Sidebar Social Sidebar]',
-    'url'            => 'https://www.mediawiki.org/wiki/Extension:Social_Sidebar',
+    'description'    => 'Adds custom social media buttons to the sidebar, fork of [https://www.mediawiki.org/wiki/User:Joa_ds Joachim De Schrijver\'s] [https://www.mediawiki.org/wiki/Extension:Social_Sidebar Social Sidebar]',
+    'url'            => 'https://github.com/TamerShlash/MediaWiki-SocialMediaIcons',
 ); 
 
 /* Default Twitter Settings, for more details visit https://dev.twitter.com/docs/follow-button */
