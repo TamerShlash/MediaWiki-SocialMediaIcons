@@ -33,10 +33,12 @@ if (!defined('MEDIAWIKI')) {
  */
 
 $wgExtensionCredits['other'][] = array(
-        'name'           => 'Social Sidebar',
-        'version'        => '0.2',
-        'author'         => '[https://www.mediawiki.org/wiki/User:Joa_ds Joachim De Schrijver]',
-        'description'    => 'Adds [https://www.twitter.com Twitter] and [https://www.facebook.com Facebook] links to the sidebar',
+        'name'           => 'SocialMediaIcons',
+        'version'        => '0.1',
+        'author'         => '[https://github.com/TamerShlash Tamer Shlash]',
+        'description'    => 'Adds [https://www.twitter.com Twitter] and [https://www.facebook.com Facebook] links to the sidebar, 
+                                fork of [https://www.mediawiki.org/wiki/User:Joa_ds Joachim De Schrijver\'s] 
+                                [https://www.mediawiki.org/wiki/Extension:Social_Sidebar Social Sidebar]',
         'url'            => 'https://www.mediawiki.org/wiki/Extension:Social_Sidebar',
 ); 
 
@@ -91,7 +93,15 @@ class SocialSidebar {
                         . 'data-size="'.$wgTwitterSize.'" '
                         . (($wgTwitterWidth=='')?'':'data-width="'.$wgTwitterWidth.'" ')
                         .'>Follow @'.$wgTwitter.'</a>'
-                        .'<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>'
+                        .'<script>!function(d, s, id) {
+                                var js,fjs=d.getElementsByTagName(s)[0];
+                                if(!d.getElementById(id)) {
+                                        js=d.createElement(s);
+                                        js.id=id;
+                                        js.src="https://platform.twitter.com/widgets.js";
+                                        fjs.parentNode.insertBefore(js,fjs);
+                                }
+                          }(document,"script","twitter-wjs");</script>'
                         .'</div>';
                 return $result;
         }
