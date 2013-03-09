@@ -48,13 +48,18 @@ $wgTwitterShowScreenName= "true";      // true or false, true by default
 $wgTwitterOptOut        = "false";  // boolean
 $wgTwitterAlignment     = "left";       // left or right
 $wgTwitterSize          = "medium";       // "medium" and "large", medium is the default
-$wgTwitterWidth         = "";  // can be in pixels, e.g: "300px", or in percentage, e.g: "120%"
+$wgTwitterWidth         = "";  // can be in pixels, e.g: "160px", or in percentage, e.g: "100%"
 /* End of Twitter Settings */
 
-/* Facebook Settings */
-$wgFacebook             = "https://facebook.com/wikilogia"; // The Complete Facebook Page URL
-$wgFacebookLocale       = "en_US";  // Get value from https://www.facebook.com/translations/FacebookLocales.xml
-$wgFacebookLikeStyle    = "button_count";  // Possible values: standard, button_count, and box_count.
+/* Default Facebook Settings, for more details visit https://developers.facebook.com/docs/reference/plugins/like/ */
+$wgFacebook             = ""; // The Complete Facebook Page URL
+$wgFacebookSend         = "false";  // true or false
+$wgFacebookFaces        = "false";  // true or false
+$wgFacebookAction       = "like";   // "like" or "recommend"
+$wgFacebookFont          = "arial";  // Possible values: 'arial', 'lucida grande', 'segoe ui', 'tahoma', 'trebuchet ms', 'verdana'
+$wgFacebookWidth        = "";
+$wgFacebookColor        = "light";  // "light" or "dark"
+$wgFacebookLayout       = "button_count";  // Possible values: standard, button_count, and box_count.
 /* End of Facebook Settings */
 
 // Hook to modify the sidebar
@@ -63,15 +68,11 @@ $wgHooks['SkinBuildSidebar'][] = 'SocialSideBar::Builder';
 // Class & Functions
 class SocialSidebar {        
         static function Builder($skin, &$bar) {
-                global $wgFacebook, $wgFacebookLocale, $wgFacebookLikeStyle;
-                global $wgTwitter, $wgTwitterLocale;
-                
-                if ($wgFacebook != "")
-                        $bar['socialsidebar']  = '<iframe src="http://www.facebook.com/plugins/like.php?app_id=150743178336313&amp;locale='
-                        .$wgFacebookLocale
-                        .'&amp;href='.rawurlencode($wgFacebook)
-                        .'&amp;send=false&amp;layout='.$wgFacebookLikeStyle
-                        .'&amp;width=135&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:135px; height:21px;" allowTransparency="true"></iframe>';
+                global $wgFacebook, $wgTwitter;
+
+                if (($wgFacebook . $wgTwitter) == '')
+                        return false;
+                $bar['socialsidebar'] = SocialSidebar::FacebookBuilder();
                 $bar['socialsidebar'] .= SocialSidebar::TwitterBuilder();
                 return true;
         }
@@ -81,7 +82,7 @@ class SocialSidebar {
                        $wgTwitterWidth, $wgTwitterShowCount, $wgTwitterShowScreenName, $wgTwitterOptOut;
                 if ($wgTwitter == '')
                         return '';
-                $result = '<a href="https://twitter.com/'.$wgTwitter.'" class="twitter-follow-button" '
+                $result = '<div><a href="https://twitter.com/'.$wgTwitter.'" class="twitter-follow-button" '
                         . 'data-show-screen-name="'.$wgTwitterShowScreenName.'" '
                         . 'data-show-count="'.$wgTwitterShowCount.'" '
                         . 'data-lang="'.$wgTwitterLocale.'" '
@@ -91,7 +92,32 @@ class SocialSidebar {
                         . (($wgTwitterWidth=='')?'':'data-width="'.$wgTwitterWidth.'" ')
                         .'>Follow @'.$wgTwitter.'</a>'
                         .'<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>'
-                        ;
+                        .'</div>';
+                return $result;
+        }
+
+        static function FacebookBuilder() {
+                global $wgFacebook, $wgFacebookSend, $wgFacebookFaces, $wgFacebookAction,
+                       $wgFacebookFont, $wgFacebookWidth, $wgFacebookColor, $wgFacebookLayout;
+                if ($wgFacebook == '')
+                        return '';
+                $result = '<div id="fb-root"></div>
+                           <script>(function(d, s, id) {
+                             var js, fjs = d.getElementsByTagName(s)[0];
+                             if (d.getElementById(id)) return;
+                             js = d.createElement(s); js.id = id;
+                             js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+                             fjs.parentNode.insertBefore(js, fjs);
+                           }(document, \'script\', \'facebook-jssdk\'));</script>'
+                        . '<div class="fb-like" data-href="'.$wgFacebook.'" '
+                        . 'data-send="'.$wgFacebookSend.'" '
+                        . 'data-show-faces="'.$wgFacebookFaces.'" '
+                        . 'data-action="'.$wgFacebookAction.'" '
+                        . 'data-font="'.$wgFacebookFont.'" '
+                        . 'data-colorscheme="'.$wgFacebookColor.'" '
+                        . 'data-layout="'.$wgFacebookLayout.'" '
+                        . (($wgFacebookWidth=='')?'':'data-width="'.$wgFacebookWidth.'" ')
+                        . '></div>';
                 return $result;
         }
 
